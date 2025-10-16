@@ -6,9 +6,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { normalizeError } from '../../lib/api';
 
+// assets
+import Logo from '../../assets/icons/Logo.png';
+import LoginImage from '../../assets/icons/login/logInImage.png';
+import Vector11 from '../../assets/icons/login/Vector 11.png';
+import GoogleIcon from '../../assets/icons/login/Google.png';
+
 const schema = z.object({
-  email: z.string().email('Geçerli bir e-posta girin'),
-  password: z.string().min(6, 'Şifre en az 6 karakter olmalı'),
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters long'),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -39,53 +45,95 @@ export default function SignInPage() {
   }
 
   return (
-    <main className="min-h-screen grid md:grid-cols-2">
-      <section className="flex items-center justify-center p-8">
-        <div className="w-full sm:max-w-md space-y-6">
-          <header className="space-y-1">
-            <h1 className="text-3xl font-semibold">Sign In</h1>
-            <p className="text-sm text-gray-600">Welcome back! Please enter your details</p>
+    <main className="relative min-h-screen grid md:grid-cols-2 bg-white">
+      {/* Top-left logo */}
+      <div className="pointer-events-none absolute left-[34px] top-8 md:left-[60px] md:top-10 z-20">
+        <img src={Logo} alt="Maglo" className="h-6 w-auto" />
+      </div>
+
+      {/* Left: Form */}
+      <section className="relative flex items-center justify-center px-6 py-12 md:px-[135px]">
+        <div className="w-full max-w-md space-y-8">
+          <header className="space-y-2">
+            <h1 className="text-3xl font-semibold text-[#1B212D] font-['Kumbh_Sans']">Sign In</h1>
+            <p className="text-base text-[#929EAE] font-['Kumbh_Sans']">Welcome back! Please enter your details</p>
           </header>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-1">
-              <label htmlFor="email" className="text-sm font-medium">Email</label>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+            <div className="flex flex-col items-start gap-[5px]">
+              <div className="self-stretch pr-2.5 py-2.5 inline-flex justify-start items-start gap-2.5">
+                <label htmlFor="email" className="text-sm font-medium text-[#1B212D] font-['Kumbh_Sans']">Email</label>
+              </div>
               <input
                 id="email"
                 type="email"
                 placeholder="example@gmail.com"
-                className={`w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 ${errors.email ? 'border-red-500 focus:ring-red-400' : 'focus:ring-brand-500'}`}
+                className={`w-full rounded-[10px] outline-1 outline-offset-[-1px] outline-zinc-100 pl-5 pr-6 pt-3.5 pb-4 text-sm text-[#1B212D] placeholder:text-[#929EAE] focus:outline-none focus:ring-2 font-['Kumbh_Sans'] ${errors.email ? 'ring-red-400' : 'ring-[#C8EE44]'} disabled:opacity-60`}
                 disabled={isSubmitting}
                 {...register('email')}
               />
-              {errors.email && <p className="text-xs text-red-600">{errors.email.message}</p>}
+              {errors.email && <p className="mt-1 text-xs text-red-600 font-['Kumbh_Sans']">{errors.email.message}</p>}
             </div>
-            <div className="space-y-1">
-              <label htmlFor="password" className="text-sm font-medium">Password</label>
+
+            <div className="flex flex-col items-start gap-[5px]">
+              <div className="self-stretch pr-2.5 py-2.5 inline-flex justify-start items-start gap-2.5">
+                <label htmlFor="password" className="text-sm font-medium text-[#1B212D] font-['Kumbh_Sans']">Password</label>
+              </div>
               <input
                 id="password"
                 type="password"
                 placeholder="•••••••"
-                className={`w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 ${errors.password ? 'border-red-500 focus:ring-red-400' : 'focus:ring-brand-500'}`}
+                className={`w-full rounded-[10px] outline-1 outline-offset-[-1px] outline-zinc-100 pl-5 pr-6 pt-3.5 pb-4 text-sm text-[#1B212D] placeholder:text-[#929EAE] font-['Kumbh_Sans'] focus:outline-none focus:ring-2 ${errors.password ? 'ring-red-400' : 'ring-[#C8EE44]'} disabled:opacity-60`}
                 disabled={isSubmitting}
                 {...register('password')}
               />
-              {errors.password && <p className="text-xs text-red-600">{errors.password.message}</p>}
+              {errors.password && <p className="mt-1 text-xs text-red-600 font-['Kumbh_Sans']">{errors.password.message}</p>}
             </div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full rounded-xl bg-brand-500 text-gray-900 font-medium py-2 hover:brightness-95 transition disabled:opacity-60"
-            >
-              {isSubmitting ? 'Signing in…' : 'Sign In'}
-            </button>
+
+            <div className="space-y-3.5 pt-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full rounded-[10px] bg-[#C8EE44] text-[#1B212D] font-semibold py-3.5 hover:brightness-95 transition disabled:opacity-60"
+              >
+                {isSubmitting ? 'Signing in…' : 'Sign In'}
+              </button>
+
+              <button
+                type="button"
+                disabled={isSubmitting}
+                className="w-full rounded-[10px] outline-1 outline-offset-[-1px] outline-neutral-200 px-5 py-3 inline-flex items-center justify-center gap-2.5 hover:bg-gray-50 transition disabled:opacity-60"
+              >
+                <img src={GoogleIcon} alt="Google" className="h-6 w-6" />
+                <span className="text-[#78778B] text-base font-semibold font-['Kumbh_Sans']">Sign in with Google</span>
+              </button>
+            </div>
           </form>
-          <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link className="font-medium underline" to="/signup">Sign up</Link>
-          </p>
+
+          <div className="relative pt-2 justify-center text-center">
+            <p className="text-sm text-[#929EAE] font-['Kumbh_Sans']">
+              Don’t have an account?{' '}
+              <Link to="/signup" className="text-[#1B212D] font-medium inline-block relative font-['Kumbh_Sans']">
+                <span>Sign up</span>
+                {/* Decorative vector underline under the link (43x5px) */}
+                <img
+                  src={Vector11}
+                  alt=""
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-1 right-0 w-[43px] h-[5px]"
+                />
+              </Link>
+            </p>
+          </div>
         </div>
       </section>
-      <aside className="hidden md:block bg-gray-100" />
+
+      {/* Right: Image with overlay */}
+      <aside className="relative hidden md:block min-h-screen">
+        <img src={LoginImage} alt="Sign in illustration" className="absolute inset-0 h-full w-full object-cover" />
+        {/* Subtle dark overlay to improve contrast */}
+        <div className="absolute inset-0 bg-[#1B212D] opacity-10" />
+      </aside>
     </main>
   );
 }
