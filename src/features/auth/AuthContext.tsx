@@ -55,9 +55,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       toast.success('User registered successfully');
     },
     logout: async () => {
-      await apiLogout();
-      token.clear();
-      setUser(null);
+      try {
+        await apiLogout(); // server should clear HttpOnly refresh cookie here
+      } finally {
+        // Always clear local state even if the network call fails
+        token.clear();
+        setUser(null);
+      }
       toast.success('Logged out');
     },
     refreshProfile: refreshProfileInternal,

@@ -42,7 +42,7 @@ export default function Sidebar() {
               className={({ isActive }) =>
                 classNames(
                   'w-48 pl-4 pr-20 py-3 rounded-lg inline-flex items-center gap-3',
-                  'font-kumbh text-sm',
+                  'font-["Kumbh_Sans"] text-sm',
                   isActive
                     ? 'bg-[#C8EE44] text-[#1B212D] font-semibold'
                     : 'text-[#929EAE] font-medium hover:bg-gray-100',
@@ -51,7 +51,7 @@ export default function Sidebar() {
               }
             >
               <img src={l.icon} width={20} height={20} alt="" className="shrink-0" />
-              <span>{l.label}</span>
+              <span className='whitespace-nowrap'>{l.label}</span>
             </NavLink>
           ))}
         </nav>
